@@ -550,14 +550,14 @@ async function finishQuiz() {
     perfil_principal:mainProfile.name, perfil_nivel_geral:mainLevel,
     respostas_raw:JSON.stringify(answers)
   };
-  try { await supabaseInsert('mapa_sistemico_resultados', payload); savedRecordId=true; } catch(e){ console.warn('Supabase:',e.message); }
+  try { await supabaseInsert('mapa_sistemico_resultados', payload); savedRecordId=true; } catch(e){ console.warn('Make webhook:', e.message); }
   await new Promise(r=>setTimeout(r,1200));
   document.getElementById('saving-overlay').classList.remove('active');
   buildResult(scores);
   goTo('screen-result');
   const statusEl=document.getElementById('save-status');
   if(savedRecordId){statusEl.style.display='block';statusEl.className='save-status';statusEl.textContent='✓ Diagnóstico salvo com sucesso.';}
-  else if(SUPABASE_URL.includes('SEU-PROJETO')){}
+  else{statusEl.style.display='block';statusEl.className='save-status error';statusEl.textContent='Não foi possível salvar online. Baixe o PDF para guardar seu resultado.';}
   else{statusEl.style.display='block';statusEl.className='save-status error';statusEl.textContent='Não foi possível salvar online. Baixe o PDF para guardar seu resultado.';}
 }
 
