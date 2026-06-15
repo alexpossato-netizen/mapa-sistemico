@@ -623,7 +623,6 @@ function buildResult(scores) {
     </div>`).join('');
 
   document.getElementById('narrative-text').innerHTML=generateNarrative(userName,mainP,sortedAdapt[1],orfaoScore,scores,mainLv);
-  document.getElementById('journey-text').textContent=journeyRecommendation(mainLv,orfaoScore);
 }
 
 const PROFILE_DEEP = {
