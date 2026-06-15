@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+https://kebgzjgegpfgusbhttzs.supabase.co
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -295,24 +295,31 @@
 // ════════════════════════════════════════════════════════
 //  ⚙️  CONFIGURAÇÃO SUPABASE — edite apenas estas 2 linhas
 // ════════════════════════════════════════════════════════
-const SUPABASE_URL      = 'https://kebgzjgegpfgusbhttzs.supabase.co';
+const SUPABASE_URL = 'https://kebgzjgegpfgusbhttzs.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_iw2Tfcdjfd8lDfI-Cfr-5w_UalzsDPq';
 // ════════════════════════════════════════════════════════
 
-// Cliente Supabase via REST (sem SDK, funciona em qualquer HTML)
+// Cliente Supabase via REST (suporta chave sb_publishable_ e anon key)
 async function supabaseInsert(table, data) {
+  const isNewKey = SUPABASE_ANON_KEY.startsWith('sb_publishable_');
+  const headers = { 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+  if (isNewKey) {
+    headers['Authorization'] = `Bearer ${SUPABASE_ANON_KEY}`;
+    headers['x-client-info'] = 'supabase-js/2.0.0';
+  } else {
+    headers['apikey'] = SUPABASE_ANON_KEY;
+    headers['Authorization'] = `Bearer ${SUPABASE_ANON_KEY}`;
+  }
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-      'Prefer': 'return=representation'
-    },
+    headers,
     body: JSON.stringify(data)
   });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`${res.status}: ${err}`);
+  }
+  return true;
 }
 
 // ── DADOS DOS PERFIS ──────────────────────────────────────────────────────
