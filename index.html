@@ -558,7 +558,6 @@ async function finishQuiz() {
   const statusEl=document.getElementById('save-status');
   if(savedRecordId){statusEl.style.display='block';statusEl.className='save-status';statusEl.textContent='✓ Diagnóstico salvo com sucesso.';}
   else{statusEl.style.display='block';statusEl.className='save-status error';statusEl.textContent='Não foi possível salvar online. Baixe o PDF para guardar seu resultado.';}
-  else{statusEl.style.display='block';statusEl.className='save-status error';statusEl.textContent='Não foi possível salvar online. Baixe o PDF para guardar seu resultado.';}
 }
 
 function buildResult(scores) {
